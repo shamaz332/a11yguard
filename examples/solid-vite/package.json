@@ -1,0 +1,18 @@
+{
+  "name": "a11yguard-solid-vite-example",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@shamaz332/a11yguard": "workspace:*",
+    "solid-js": "^1.8.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "vite-plugin-solid": "^2.8.0",
+    "typescript": "^5.0.0"
+  }
+}

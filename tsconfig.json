@@ -13,6 +13,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "isolatedModules": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": false,
     "jsx": "react-jsx",
     "paths": {
       "@core/*": ["./src/core/*"]

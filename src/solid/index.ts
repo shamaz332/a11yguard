@@ -1,2 +1,14 @@
-// Solid adapter — implemented in Week 4
-export {};
+export { createFocusTrap } from './create-focus-trap.js';
+export { createAnnouncer } from './create-announcer.js';
+export { createReducedMotion, createColorScheme } from './create-preferences.js';
+export { createKeyboardNav } from './create-keyboard-nav.js';
+
+export type { SolidFocusTrapOptions } from './create-focus-trap.js';
+
+// Re-export shared types
+export type {
+  FocusTrapOptions,
+  AnnouncePriority,
+  KeyboardNavOptions,
+  ColorScheme,
+} from '../core/types.js';

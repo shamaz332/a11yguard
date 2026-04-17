@@ -1,0 +1,24 @@
+{
+  "name": "a11yguard-angular-example",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "ng serve",
+    "build": "ng build"
+  },
+  "dependencies": {
+    "@angular/common": "^17.0.0",
+    "@angular/core": "^17.0.0",
+    "@angular/platform-browser": "^17.0.0",
+    "@shamaz332/a11yguard": "workspace:*",
+    "rxjs": "^7.0.0",
+    "zone.js": "^0.14.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^17.0.0",
+    "@angular/cli": "^17.0.0",
+    "@angular/compiler": "^17.0.0",
+    "@angular/compiler-cli": "^17.0.0",
+    "typescript": "^5.0.0"
+  }
+}
