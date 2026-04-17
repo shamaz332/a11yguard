@@ -1,0 +1,137 @@
+{
+  "name": "@shamaz332/a11yguard",
+  "version": "1.0.0",
+  "description": "Ship EAA-compliant JavaScript apps in any framework. Zero-dependency accessibility toolkit for WCAG 2.2 AA.",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js",
+      "require": "./dist/core/index.cjs"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js",
+      "require": "./dist/react/index.cjs"
+    },
+    "./vue": {
+      "types": "./dist/vue/index.d.ts",
+      "import": "./dist/vue/index.js",
+      "require": "./dist/vue/index.cjs"
+    },
+    "./angular": {
+      "types": "./dist/angular/index.d.ts",
+      "import": "./dist/angular/index.js",
+      "require": "./dist/angular/index.cjs"
+    },
+    "./svelte": {
+      "types": "./dist/svelte/index.d.ts",
+      "import": "./dist/svelte/index.js",
+      "require": "./dist/svelte/index.cjs"
+    },
+    "./solid": {
+      "types": "./dist/solid/index.d.ts",
+      "import": "./dist/solid/index.js",
+      "require": "./dist/solid/index.cjs"
+    },
+    "./audit": {
+      "types": "./dist/audit/index.d.ts",
+      "import": "./dist/audit/index.js",
+      "require": "./dist/audit/index.cjs"
+    }
+  },
+  "main": "./dist/core/index.cjs",
+  "module": "./dist/core/index.js",
+  "types": "./dist/core/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src test --ext .ts,.tsx",
+    "lint:fix": "eslint src test --ext .ts,.tsx --fix",
+    "format": "prettier --write src test",
+    "format:check": "prettier --check src test",
+    "size": "size-limit",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build && pnpm test && pnpm size"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "wcag",
+    "eaa",
+    "european-accessibility-act",
+    "focus-trap",
+    "aria",
+    "screen-reader",
+    "react",
+    "vue",
+    "angular",
+    "svelte",
+    "solid",
+    "keyboard-navigation",
+    "color-contrast",
+    "apca"
+  ],
+  "author": {
+    "name": "Shamaz Saeed",
+    "email": "s.shamazsaeed@gmail.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shamaz332/a11yguard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shamaz332/a11yguard/issues"
+  },
+  "homepage": "https://github.com/shamaz332/a11yguard#readme",
+  "peerDependencies": {
+    "react": ">=17",
+    "react-dom": ">=17",
+    "vue": ">=3",
+    "@angular/core": ">=16",
+    "rxjs": ">=7",
+    "svelte": ">=4",
+    "solid-js": ">=1.7"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": true },
+    "react-dom": { "optional": true },
+    "vue": { "optional": true },
+    "@angular/core": { "optional": true },
+    "rxjs": { "optional": true },
+    "svelte": { "optional": true },
+    "solid-js": { "optional": true }
+  },
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^11.0.0",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "@vue/test-utils": "^2.0.0",
+    "eslint": "^8.0.0",
+    "eslint-plugin-jsdoc": "^48.0.0",
+    "jsdom": "^24.0.0",
+    "prettier": "^3.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "size-limit": "^11.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.0.0",
+    "vue": "^3.0.0"
+  }
+}
