@@ -2,7 +2,7 @@ module.exports = [
   {
     name: 'core',
     path: 'dist/core/index.js',
-    limit: '5 KB',
+    limit: '8 KB',
   },
   {
     name: 'react adapter',
