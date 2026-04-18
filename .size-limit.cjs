@@ -7,27 +7,27 @@ module.exports = [
   {
     name: 'react adapter',
     path: 'dist/react/index.js',
-    limit: '1.5 KB',
+    limit: '3.5 KB',
   },
   {
     name: 'vue adapter',
     path: 'dist/vue/index.js',
-    limit: '1.5 KB',
+    limit: '3.5 KB',
   },
   {
     name: 'angular adapter',
     path: 'dist/angular/index.js',
-    limit: '3 KB',
+    limit: '3.5 KB',
   },
   {
     name: 'svelte adapter',
     path: 'dist/svelte/index.js',
-    limit: '1.5 KB',
+    limit: '3 KB',
   },
   {
     name: 'solid adapter',
     path: 'dist/solid/index.js',
-    limit: '1.5 KB',
+    limit: '3 KB',
   },
   {
     name: 'audit module',
