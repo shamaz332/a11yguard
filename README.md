@@ -49,7 +49,9 @@ Existing solutions either:
 | **Angular directives** | `@shamaz332/a11yguard/angular` | `FocusTrapDirective`, `KeyboardNavDirective`, `SkipLinkDirective`, `AnnouncerService`, `PreferencesService`, `RouteAnnouncerService`, `A11yService`, `A11yGuardModule` |
 | **Svelte actions** | `@shamaz332/a11yguard/svelte` | `focusTrap`, `keyboardNav`, `scrollLock`, `focusRestore`, `skipLink` actions + `reducedMotion`, `colorScheme` stores |
 | **Solid primitives** | `@shamaz332/a11yguard/solid` | `createFocusTrap`, `createAnnouncer`, `createKeyboardNav`, `createReducedMotion`, `createColorScheme`, `createScrollLock`, `createFocusRestore`, `createSkipLink`, `createRouteAnnouncer` |
-| **EAA audit** | `@shamaz332/a11yguard/audit` | `auditEAA()`, `watchEAA()` — 18 WCAG rules mapped to EN 301 549 / EAA articles |
+| **EAA audit** | `@shamaz332/a11yguard/audit` | `auditEAA()`, `watchEAA()` — 18 WCAG rules mapped to EN 301 549 / EAA articles; `formatReport()`, `logReport()` |
+| **Test matcher** | `@shamaz332/a11yguard/testing` | `expect(el).toHaveNoEAAViolations()` for Vitest and Jest |
+| **Playwright** | `@shamaz332/a11yguard/playwright` | `checkEAA(page)`, `assertNoEAAViolations(page)` — audit real pages in end-to-end tests |
 
 ---
 
@@ -1014,6 +1016,61 @@ const stop = watchEAA((result) => {
 // Disconnect when done
 stop();
 ```
+
+### Reports and development warnings
+
+```ts
+import { auditEAA, watchEAA, formatReport, logReport } from '@shamaz332/a11yguard/audit';
+
+// Plain text (terminals), Markdown (PR comments, compliance records) or JSON (tooling)
+console.log(formatReport(auditEAA()));
+const markdown = formatReport(auditEAA(), 'markdown');
+
+// Warn in the console during development, with each failing element attached
+if (import.meta.env.DEV) watchEAA(logReport);
+```
+
+### In unit tests (Vitest / Jest)
+
+```ts
+// vitest.setup.ts (or jest.setup.ts)
+import { expect } from 'vitest';
+import { eaaMatchers } from '@shamaz332/a11yguard/testing';
+expect.extend(eaaMatchers);
+
+// vitest.d.ts — add the matcher type
+import type { EAAMatchers } from '@shamaz332/a11yguard/testing';
+declare module 'vitest' {
+  interface Assertion<T = any> extends EAAMatchers<T> {}
+}
+```
+
+```tsx
+it('signup form is accessible', () => {
+  const { container } = render(<SignupForm />);
+  expect(container).toHaveNoEAAViolations();
+  expect(container).toHaveNoEAAViolations({ exclude: ['contrast'] }); // jsdom has no layout
+});
+```
+
+When you pass an element, page-level rules (`page-lang`, `landmarks`, `document-title`) are skipped, since a component is not a page. Pass `document` to run them.
+
+### In end-to-end tests (Playwright)
+
+```ts
+import { test, expect } from '@playwright/test';
+import { checkEAA, assertNoEAAViolations, formatReport } from '@shamaz332/a11yguard/playwright';
+
+test('checkout meets WCAG AA', async ({ page }) => {
+  await page.goto('/checkout');
+  await assertNoEAAViolations(page);                  // throws with a readable report
+
+  const result = await checkEAA(page, { include: 'form', level: 'AAA' });
+  expect(result.violations, formatReport(result)).toEqual([]);
+});
+```
+
+The audit runs inside the real browser, so layout-dependent rules like `contrast` and `target-size` give accurate results. `@playwright/test` is not a dependency — any object with `addScriptTag` and `evaluate` works.
 
 **Sample output**:
 

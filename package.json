@@ -75,6 +75,26 @@
         "default": "./dist/audit/index.cjs"
       }
     },
+    "./testing": {
+      "import": {
+        "types": "./dist/testing/index.d.ts",
+        "default": "./dist/testing/index.js"
+      },
+      "require": {
+        "types": "./dist/testing/index.d.cts",
+        "default": "./dist/testing/index.cjs"
+      }
+    },
+    "./playwright": {
+      "import": {
+        "types": "./dist/playwright/index.d.ts",
+        "default": "./dist/playwright/index.js"
+      },
+      "require": {
+        "types": "./dist/playwright/index.d.cts",
+        "default": "./dist/playwright/index.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "main": "./dist/core/index.cjs",
@@ -87,7 +107,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsup --config tsup.browser.config.ts",
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -118,7 +138,10 @@
     "solid",
     "keyboard-navigation",
     "color-contrast",
-    "apca"
+    "apca",
+    "playwright",
+    "vitest",
+    "jest"
   ],
   "author": {
     "name": "Shamaz Saeed",
@@ -171,6 +194,7 @@
     "@size-limit/preset-small-lib": "^11.0.0",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.0.0",
+    "@types/node": "^20.19.43",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
     "@typescript-eslint/eslint-plugin": "^7.0.0",

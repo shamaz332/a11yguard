@@ -20,7 +20,10 @@ import { autocompleteValid } from './rules/autocomplete-valid.js';
 
 export type { AuditOptions, AuditResult, WCAGLevel } from './types.js';
 export type { Violation, Severity, AuditRule } from './types.js';
+export type { SerializedViolation, SerializedAuditResult } from './types.js';
 export { eaaMap, getEAAArticles } from './eaa-map.js';
+export { formatReport, logReport } from './report.js';
+export type { ReportFormat, ReportInput, ReportViolation } from './report.js';
 
 const ALL_RULES: AuditRule[] = [
   imagesAlt,
