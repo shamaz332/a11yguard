@@ -1,5 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { getFocusableElements, isElementVisible, getFirstFocusable, getLastFocusable, getSelector } from '../../src/core/utils/dom.js';
+import {
+  getFocusableElements,
+  isElementVisible,
+  getFirstFocusable,
+  getLastFocusable,
+  getSelector,
+} from '../../src/core/utils/dom.js';
 
 describe('getFocusableElements', () => {
   let container: HTMLDivElement;
@@ -40,7 +46,8 @@ describe('getFocusableElements', () => {
   });
 
   it('finds elements with non-negative tabindex', () => {
-    container.innerHTML = '<div tabindex="0">Focusable</div><span tabindex="-1">Not in tab order</span>';
+    container.innerHTML =
+      '<div tabindex="0">Focusable</div><span tabindex="-1">Not in tab order</span>';
     expect(getFocusableElements(container)).toHaveLength(1);
   });
 

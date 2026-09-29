@@ -4,8 +4,8 @@
  * using vitest + jsdom. This avoids the Angular testing overhead while
  * still verifying that the directives and services behave correctly.
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { ElementRef, NgZone, SimpleChange, SimpleChanges } from '@angular/core';
+import { describe, it, expect } from 'vitest';
+import { ElementRef, SimpleChange, SimpleChanges } from '@angular/core';
 import { FocusTrapDirective } from '../../src/angular/focus-trap.directive.js';
 import { KeyboardNavDirective } from '../../src/angular/keyboard-nav.directive.js';
 import { AnnouncerService } from '../../src/angular/announcer.service.js';

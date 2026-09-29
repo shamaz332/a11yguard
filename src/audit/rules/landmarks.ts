@@ -10,15 +10,11 @@ export const landmarks: AuditRule = {
 
   check(root: Element | Document, _level: WCAGLevel): Violation[] {
     const hasMain =
-      root.querySelector('main') !== null ||
-      root.querySelector('[role="main"]') !== null;
+      root.querySelector('main') !== null || root.querySelector('[role="main"]') !== null;
 
     if (hasMain) return [];
 
-    const target =
-      root instanceof Document
-        ? root.documentElement
-        : (root as Element);
+    const target = root instanceof Document ? root.documentElement : root;
 
     return [
       makeViolation(
@@ -27,7 +23,7 @@ export const landmarks: AuditRule = {
         'serious',
         target,
         'Page has no <main> landmark',
-        'Add a <main> element or role="main" to identify the primary content region.',
+        'Add a <main> element or role="main" to identify the primary content region.'
       ),
     ];
   },

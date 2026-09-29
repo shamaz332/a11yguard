@@ -65,11 +65,9 @@ export function injectSkipLink(options: SkipLinkOptions = {}): () => void {
       // Make target programmatically focusable if it isn't already
       if (!targetEl.hasAttribute('tabindex')) {
         targetEl.setAttribute('tabindex', '-1');
-        targetEl.addEventListener(
-          'blur',
-          () => targetEl.removeAttribute('tabindex'),
-          { once: true }
-        );
+        targetEl.addEventListener('blur', () => targetEl.removeAttribute('tabindex'), {
+          once: true,
+        });
       }
       targetEl.focus();
     }

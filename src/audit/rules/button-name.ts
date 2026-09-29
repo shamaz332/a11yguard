@@ -37,8 +37,8 @@ export const buttonName: AuditRule = {
             'critical',
             el,
             'Button has no accessible name',
-            'Add visible text content, aria-label, or aria-labelledby to the button.',
-          ),
+            'Add visible text content, aria-label, or aria-labelledby to the button.'
+          )
         );
       }
     }

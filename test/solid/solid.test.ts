@@ -6,11 +6,14 @@ import { createReducedMotion, createColorScheme } from '../../src/solid/create-p
 import { createKeyboardNav } from '../../src/solid/create-keyboard-nav.js';
 
 // Mock matchMedia for preferences
-vi.stubGlobal('matchMedia', vi.fn((query: string) => ({
-  matches: query === '(prefers-color-scheme: dark)',
-  addEventListener: vi.fn(),
-  removeEventListener: vi.fn(),
-})));
+vi.stubGlobal(
+  'matchMedia',
+  vi.fn((query: string) => ({
+    matches: query === '(prefers-color-scheme: dark)',
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  }))
+);
 
 // ─── createAnnouncer ──────────────────────────────────────────────────────────
 

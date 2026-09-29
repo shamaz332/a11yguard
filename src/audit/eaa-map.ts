@@ -68,6 +68,9 @@ export const eaaMap: Record<string, string[]> = {
   '4.1.3': ['EN 301 549: 9.4.1.3'],
 };
 
+/**
+ *
+ */
 export function getEAAArticles(wcagCriteria: string[]): string[] {
   const articles: string[] = [];
   for (const criterion of wcagCriteria) {

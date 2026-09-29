@@ -82,7 +82,7 @@ export function auditEAA(options: AuditOptions = {}): AuditResult {
  */
 export function watchEAA(
   onChange: (result: AuditResult) => void,
-  options: AuditOptions = {},
+  options: AuditOptions = {}
 ): () => void {
   if (typeof MutationObserver === 'undefined') {
     return () => undefined;

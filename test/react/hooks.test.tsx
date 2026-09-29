@@ -1,22 +1,33 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { useFocusTrap } from '../../src/react/use-focus-trap.js';
 import { useAnnouncer } from '../../src/react/use-announcer.js';
 import { useReducedMotion } from '../../src/react/use-reduced-motion.js';
 import { useColorScheme } from '../../src/react/use-color-scheme.js';
 import { useScrollLock } from '../../src/react/use-scroll-lock.js';
 import { useKeyboardNav } from '../../src/react/use-keyboard-nav.js';
-import { isScrollLocked } from '../../src/core/scroll-lock.js';
+import { isScrollLocked, unlockScroll } from '../../src/core/scroll-lock.js';
 
 // ─── useFocusTrap ─────────────────────────────────────────────────────────────
 
 function FocusTrapModal({ open, onClose }: { open: boolean; onClose?: () => void }) {
-  const ref = useFocusTrap({ active: open, escapeDeactivates: true, onDeactivate: onClose });
+  const ref = useFocusTrap({
+    active: open,
+    escapeDeactivates: true,
+    ...(onClose ? { onDeactivate: onClose } : {}),
+  });
   return open ? (
-    <div ref={ref as React.RefObject<HTMLDivElement>} role="dialog" aria-modal="true" data-testid="modal">
+    <div
+      ref={ref as React.RefObject<HTMLDivElement>}
+      role="dialog"
+      aria-modal="true"
+      data-testid="modal"
+    >
       <button data-testid="first">First</button>
-      <button data-testid="close" onClick={onClose}>Close</button>
+      <button data-testid="close" onClick={onClose}>
+        Close
+      </button>
     </div>
   ) : null;
 }
@@ -84,11 +95,14 @@ describe('useAnnouncer', () => {
 
 describe('useReducedMotion', () => {
   beforeEach(() => {
-    vi.stubGlobal('matchMedia', vi.fn((query: string) => ({
-      matches: query === '(prefers-reduced-motion: reduce)',
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-    })));
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn((query: string) => ({
+        matches: query === '(prefers-reduced-motion: reduce)',
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      }))
+    );
   });
 
   it('returns a boolean', () => {
@@ -106,11 +120,14 @@ describe('useReducedMotion', () => {
 
 describe('useColorScheme', () => {
   beforeEach(() => {
-    vi.stubGlobal('matchMedia', vi.fn((query: string) => ({
-      matches: query === '(prefers-color-scheme: dark)',
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-    })));
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn((query: string) => ({
+        matches: query === '(prefers-color-scheme: dark)',
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      }))
+    );
   });
 
   it('returns a ColorScheme string', () => {
@@ -132,7 +149,6 @@ vi.stubGlobal('scrollTo', vi.fn());
 describe('useScrollLock', () => {
   beforeEach(() => {
     while (isScrollLocked()) {
-      const { unlockScroll } = require('../../src/core/scroll-lock.js') as typeof import('../../src/core/scroll-lock.js');
       unlockScroll();
     }
   });

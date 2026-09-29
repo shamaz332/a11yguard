@@ -1,11 +1,4 @@
-import {
-  Directive,
-  ElementRef,
-  Input,
-  OnInit,
-  OnDestroy,
-  OnChanges,
-} from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { createKeyboardNav } from '../core/keyboard-nav.js';
 import type { KeyboardNav, KeyboardNavOptions, KeyboardNavRole } from '../core/types.js';
 

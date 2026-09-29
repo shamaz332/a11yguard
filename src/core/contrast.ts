@@ -14,10 +14,7 @@ function wcagRequiredRatio(level: 'AA' | 'AAA', largeText: boolean): number {
   return largeText ? 3 : 4.5;
 }
 
-function wcagPassLevel(
-  ratio: number,
-  largeText: boolean
-): 'AAA' | 'AA' | 'fail' {
+function wcagPassLevel(ratio: number, largeText: boolean): 'AAA' | 'AA' | 'fail' {
   if (ratio >= wcagRequiredRatio('AAA', largeText)) return 'AAA';
   if (ratio >= wcagRequiredRatio('AA', largeText)) return 'AA';
   return 'fail';
@@ -74,12 +71,12 @@ function apcaLc(textColor: [number, number, number], bgColor: [number, number, n
 const APCA_LOOKUP: number[][] = [
   // 100   200   300   400   500   600   700+
   [100, 100, 100, 90, 75, 60, 45], // 12px
-  [100, 100, 90, 75, 60, 55, 45],  // 14px
-  [100, 90, 75, 60, 55, 50, 40],   // 16px
-  [90, 75, 70, 55, 50, 45, 38],    // 18px
-  [75, 70, 60, 50, 45, 40, 35],    // 24px
-  [70, 60, 55, 45, 40, 38, 30],    // 32px
-  [60, 55, 45, 40, 35, 30, 25],    // 48px+
+  [100, 100, 90, 75, 60, 55, 45], // 14px
+  [100, 90, 75, 60, 55, 50, 40], // 16px
+  [90, 75, 70, 55, 50, 45, 38], // 18px
+  [75, 70, 60, 50, 45, 40, 35], // 24px
+  [70, 60, 55, 45, 40, 38, 30], // 32px
+  [60, 55, 45, 40, 35, 30, 25], // 48px+
 ];
 
 const SIZE_BUCKETS = [12, 14, 16, 18, 24, 32, 48];
@@ -88,12 +85,18 @@ const WEIGHT_BUCKETS = [100, 200, 300, 400, 500, 600, 700];
 function apcaMinLc(fontSize: number, fontWeight: number): number {
   let sIdx = SIZE_BUCKETS.length - 1;
   for (let i = 0; i < SIZE_BUCKETS.length; i++) {
-    if (fontSize <= (SIZE_BUCKETS[i] ?? 0)) { sIdx = i; break; }
+    if (fontSize <= (SIZE_BUCKETS[i] ?? 0)) {
+      sIdx = i;
+      break;
+    }
   }
 
   let wIdx = WEIGHT_BUCKETS.length - 1;
   for (let i = 0; i < WEIGHT_BUCKETS.length; i++) {
-    if (fontWeight <= (WEIGHT_BUCKETS[i] ?? 0)) { wIdx = i; break; }
+    if (fontWeight <= (WEIGHT_BUCKETS[i] ?? 0)) {
+      wIdx = i;
+      break;
+    }
   }
 
   return APCA_LOOKUP[sIdx]?.[wIdx] ?? 60;
@@ -142,7 +145,9 @@ export function checkContrast(
     const passedLevel = wcagPassLevel(ratio, largeText);
     result.wcag = {
       ratio,
-      passes: passedLevel !== 'fail' && (level === 'AA' ? passedLevel === 'AA' || passedLevel === 'AAA' : passedLevel === 'AAA'),
+      passes:
+        passedLevel !== 'fail' &&
+        (level === 'AA' ? passedLevel === 'AA' || passedLevel === 'AAA' : passedLevel === 'AAA'),
       level: passedLevel,
     };
   }

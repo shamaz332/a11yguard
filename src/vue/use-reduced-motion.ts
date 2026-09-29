@@ -16,7 +16,9 @@ export function useReducedMotion(): Ref<boolean> {
 
   onMounted(() => {
     value.value = prefersReducedMotion();
-    unsub = onReducedMotionChange((v) => { value.value = v; });
+    unsub = onReducedMotionChange((v) => {
+      value.value = v;
+    });
   });
 
   onUnmounted(() => unsub?.());

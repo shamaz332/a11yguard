@@ -11,8 +11,23 @@ const AAA_NORMAL = 7.0;
 const AAA_LARGE = 4.5;
 
 const TEXT_TAGS = new Set([
-  'p', 'span', 'a', 'li', 'td', 'th', 'dt', 'dd', 'label',
-  'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button', 'legend',
+  'p',
+  'span',
+  'a',
+  'li',
+  'td',
+  'th',
+  'dt',
+  'dd',
+  'label',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'button',
+  'legend',
 ]);
 
 function isLargeText(style: CSSStyleDeclaration): boolean {
@@ -69,7 +84,7 @@ export const contrast: AuditRule = {
       const result = checkContrast(
         `rgb(${fg[0]},${fg[1]},${fg[2]})`,
         `rgb(${bg[0]},${bg[1]},${bg[2]})`,
-        { algorithm: 'wcag' },
+        { algorithm: 'wcag' }
       );
 
       if (!result.wcag) continue;
@@ -83,8 +98,8 @@ export const contrast: AuditRule = {
             'serious',
             el,
             `Insufficient colour contrast: ${result.wcag.ratio.toFixed(2)}:1 (required ${required}:1)`,
-            `Increase the contrast between the text colour and its background to at least ${required}:1.`,
-          ),
+            `Increase the contrast between the text colour and its background to at least ${required}:1.`
+          )
         );
       }
     }

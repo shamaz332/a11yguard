@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { focusTrap } from '../../src/svelte/focus-trap.action.js';
 import { keyboardNav } from '../../src/svelte/keyboard-nav.action.js';
 import { announcer } from '../../src/svelte/announcer.js';

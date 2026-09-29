@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { createFocusTrap } from '../../src/core/focus-trap.js';
 
 function buildModal(buttons = 2): HTMLDivElement {
@@ -92,7 +92,7 @@ describe('createFocusTrap', () => {
     trap.deactivate();
     expect(trap.active).toBe(true);
     // Force cleanup
-    trap['_paused'] = false;
+    (trap as unknown as { _paused: boolean })._paused = false;
     trap.destroy();
   });
 

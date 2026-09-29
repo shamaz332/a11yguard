@@ -4,8 +4,11 @@ import { makeViolation, queryAll } from '../utils.js';
 const WCAG = ['2.4.7'];
 
 const FOCUSABLE = [
-  'a[href]', 'button:not([disabled])', 'input:not([disabled])',
-  'select:not([disabled])', 'textarea:not([disabled])',
+  'a[href]',
+  'button:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
   '[tabindex]:not([tabindex="-1"])',
 ].join(',');
 
@@ -48,9 +51,7 @@ function collectFocusSuppressions(): Set<string> {
         const focusVisibleSel = sel.replace(/:focus(?!-visible)/g, ':focus-visible');
         const hasFocusVisible = Array.from(rules).some(
           (r) =>
-            r instanceof CSSStyleRule &&
-            r.selectorText === focusVisibleSel &&
-            !hasOutlineNone(r),
+            r instanceof CSSStyleRule && r.selectorText === focusVisibleSel && !hasOutlineNone(r)
         );
         if (!hasFocusVisible) {
           // Extract base selector before :focus
@@ -92,8 +93,8 @@ export const focusVisible: AuditRule = {
             'serious',
             el,
             'Focus indicator removed without :focus-visible alternative',
-            'Replace :focus { outline: none } with a :focus-visible rule that provides a visible focus indicator.',
-          ),
+            'Replace :focus { outline: none } with a :focus-visible rule that provides a visible focus indicator.'
+          )
         );
       }
     }

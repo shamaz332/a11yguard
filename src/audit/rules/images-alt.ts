@@ -20,8 +20,8 @@ export const imagesAlt: AuditRule = {
             'critical',
             el,
             '<img> element is missing the alt attribute',
-            'Add alt="" for decorative images or a descriptive alt text for meaningful images.',
-          ),
+            'Add alt="" for decorative images or a descriptive alt text for meaningful images.'
+          )
         );
       }
     }
@@ -39,8 +39,8 @@ export const imagesAlt: AuditRule = {
             'serious',
             el,
             'Element with role="img" has no accessible name',
-            'Add aria-label, aria-labelledby, or title to provide an accessible name.',
-          ),
+            'Add aria-label, aria-labelledby, or title to provide an accessible name.'
+          )
         );
       }
     }

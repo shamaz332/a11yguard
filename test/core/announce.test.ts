@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { announce, createAnnouncer } from '../../src/core/announce.js';
 
 describe('announce', () => {

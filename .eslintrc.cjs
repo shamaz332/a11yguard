@@ -6,7 +6,7 @@ module.exports = {
     ecmaVersion: 2022,
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'jsdoc'],
+  plugins: ['@typescript-eslint', 'jsdoc', 'react-hooks'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -21,5 +21,11 @@ module.exports = {
       require: { FunctionDeclaration: true, ArrowFunctionExpression: false },
     }],
   },
+  overrides: [
+    {
+      files: ['src/react/**', 'test/react/**'],
+      rules: { 'react-hooks/rules-of-hooks': 'error' },
+    },
+  ],
   ignorePatterns: ['dist/', 'node_modules/', 'examples/', '*.cjs', '*.config.ts'],
 };

@@ -3,9 +3,23 @@ import { makeViolation, queryAll } from '../utils.js';
 
 const WCAG = ['1.3.1', '3.3.2', '4.1.2'];
 const LABELED_TYPES = new Set([
-  'text', 'password', 'email', 'search', 'url', 'tel',
-  'number', 'date', 'time', 'datetime-local', 'month', 'week',
-  'color', 'range', 'file', 'checkbox', 'radio',
+  'text',
+  'password',
+  'email',
+  'search',
+  'url',
+  'tel',
+  'number',
+  'date',
+  'time',
+  'datetime-local',
+  'month',
+  'week',
+  'color',
+  'range',
+  'file',
+  'checkbox',
+  'radio',
 ]);
 
 function isLabelable(el: Element): boolean {
@@ -44,7 +58,7 @@ function hasAccessibleLabel(el: Element, root: Element | Document): boolean {
     // Iterate label[for] elements and compare attribute value directly
     // (avoids CSS.escape which may not be available in all environments)
     const hasLabel = Array.from(doc.querySelectorAll('label[for]')).some(
-      (l) => l.getAttribute('for') === id,
+      (l) => l.getAttribute('for') === id
     );
     if (hasLabel) return true;
   }
@@ -77,8 +91,8 @@ export const formLabels: AuditRule = {
             'critical',
             el,
             `Form ${el.tagName.toLowerCase()} is missing an accessible label`,
-            'Associate a <label> element, or add aria-label / aria-labelledby.',
-          ),
+            'Associate a <label> element, or add aria-label / aria-labelledby.'
+          )
         );
       }
     }
