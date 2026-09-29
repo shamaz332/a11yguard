@@ -4,6 +4,12 @@ export { useReducedMotion } from './use-reduced-motion.js';
 export { useColorScheme } from './use-color-scheme.js';
 export { useKeyboardNav } from './use-keyboard-nav.js';
 export { useScrollLock } from './use-scroll-lock.js';
+export {
+  useContrastPreference,
+  useForcedColors,
+  useReducedTransparency,
+  useInputModality,
+} from './use-preferences.js';
 
 export { useRouteAnnouncer } from './use-route-announcer.js';
 export { useSkipLink } from './use-skip-link.js';
@@ -19,6 +25,8 @@ export type {
   AnnouncePriority,
   KeyboardNavOptions,
   ColorScheme,
+  ContrastPreference,
+  InputModality,
   RouteChangeOptions,
   SkipLinkOptions,
 } from '../core/types.js';

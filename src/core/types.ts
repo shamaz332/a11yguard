@@ -210,3 +210,9 @@ export interface FieldDescription {
 // ─── Preferences ─────────────────────────────────────────────────────────────
 
 export type ColorScheme = 'light' | 'dark' | 'no-preference';
+
+/** Value of the `prefers-contrast` media feature. */
+export type ContrastPreference = 'more' | 'less' | 'custom' | 'no-preference';
+
+/** How the user last interacted with the page. */
+export type InputModality = 'keyboard' | 'pointer';

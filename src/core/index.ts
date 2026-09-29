@@ -10,7 +10,16 @@ export {
   onReducedMotionChange,
   prefersColorScheme,
   onColorSchemeChange,
+  prefersContrast,
+  onContrastChange,
+  forcedColors,
+  onForcedColorsChange,
+  prefersReducedTransparency,
+  onReducedTransparencyChange,
 } from './preferences.js';
+
+// Input Modality
+export { getInputModality, onInputModalityChange } from './input-modality.js';
 
 // Color Contrast
 export { checkContrast } from './contrast.js';
@@ -56,4 +65,6 @@ export type {
   DescribeFieldOptions,
   FieldDescription,
   ColorScheme,
+  ContrastPreference,
+  InputModality,
 } from './types.js';

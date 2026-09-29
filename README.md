@@ -42,13 +42,14 @@ Existing solutions either:
 | IDs | `@shamaz332/a11yguard` | `createId()` / `ensureId()` for `aria-labelledby`, `aria-describedby`, `aria-controls` |
 | Visually hidden | `@shamaz332/a11yguard` | Screen-reader-only text as a style object, CSS string or component |
 | Contrast checker | `@shamaz332/a11yguard` | WCAG 2.1 ratio + APCA Lc (clean-room). Returns pass/fail per level |
-| User preferences | `@shamaz332/a11yguard` | `prefers-reduced-motion`, `prefers-color-scheme` — SSR-safe, reactive |
+| User preferences | `@shamaz332/a11yguard` | `prefers-reduced-motion`, `prefers-color-scheme`, `prefers-contrast`, `forced-colors`, `prefers-reduced-transparency` — SSR-safe, reactive |
+| Input modality | `@shamaz332/a11yguard` | Know whether the user is on keyboard or pointer; sets `data-input-modality` on `<html>` for focus-ring CSS |
 | **React hooks** | `@shamaz332/a11yguard/react` | `useFocusTrap`, `useAnnouncer`, `useKeyboardNav`, `useScrollLock`, `useReducedMotion`, `useColorScheme`, `useRouteAnnouncer`, `useSkipLink`, `useFocusRestore`, `useA11yId`, `<VisuallyHidden>` |
 | **Vue composables** | `@shamaz332/a11yguard/vue` | `useFocusTrap`, `useAnnouncer`, `useKeyboardNav`, `useScrollLock`, `useReducedMotion`, `useColorScheme`, `useRouteAnnouncer`, `useSkipLink`, `useFocusRestore`, `useA11yId`, `<VisuallyHidden>` |
 | **Angular directives** | `@shamaz332/a11yguard/angular` | `FocusTrapDirective`, `KeyboardNavDirective`, `SkipLinkDirective`, `AnnouncerService`, `PreferencesService`, `RouteAnnouncerService`, `A11yService`, `A11yGuardModule` |
 | **Svelte actions** | `@shamaz332/a11yguard/svelte` | `focusTrap`, `keyboardNav`, `scrollLock`, `focusRestore`, `skipLink` actions + `reducedMotion`, `colorScheme` stores |
 | **Solid primitives** | `@shamaz332/a11yguard/solid` | `createFocusTrap`, `createAnnouncer`, `createKeyboardNav`, `createReducedMotion`, `createColorScheme`, `createScrollLock`, `createFocusRestore`, `createSkipLink`, `createRouteAnnouncer` |
-| **EAA audit** | `@shamaz332/a11yguard/audit` | `auditEAA()`, `watchEAA()` — 10 WCAG rules mapped to EN 301 549 / EAA articles |
+| **EAA audit** | `@shamaz332/a11yguard/audit` | `auditEAA()`, `watchEAA()` — 18 WCAG rules mapped to EN 301 549 / EAA articles |
 
 ---
 
@@ -1049,6 +1050,14 @@ stop();
 | `link-purpose` | 2.4.4 | moderate | Ambiguous link text ("click here", "read more", "here", etc.) |
 | `button-name` | 4.1.2 | critical | Buttons with no accessible name |
 | `target-size` | 2.5.8 | serious | Interactive targets smaller than 24×24 CSS px (WCAG 2.2) |
+| `duplicate-id` | 4.1.1 | serious / moderate | Repeated `id` values (serious when a label or ARIA attribute points at it) |
+| `aria-valid-attr` | 4.1.2 | critical | Misspelled or unknown `aria-*` attributes (e.g. `aria-labeledby`) |
+| `aria-valid-role` | 4.1.2 | serious | `role` values that are not concrete WAI-ARIA roles |
+| `aria-hidden-focus` | 4.1.2 | serious | Keyboard-focusable content inside `aria-hidden="true"` |
+| `document-title` | 2.4.2 | serious | Page without a `<title>` (document audits only) |
+| `frame-title` | 4.1.2 | serious | `<iframe>` without a title or ARIA label |
+| `table-headers` | 1.3.1 | serious | Data tables with no `<th>` / header roles |
+| `autocomplete-valid` | 1.3.5 | serious | Invalid `autocomplete` values (AA and above) |
 
 ---
 
@@ -1245,6 +1254,38 @@ type ColorScheme = 'light' | 'dark' | 'no-preference';
 function prefersColorScheme(): ColorScheme;
 function onColorSchemeChange(cb: (scheme: ColorScheme) => void): () => void;
 ```
+
+#### `prefersContrast()` / `forcedColors()` / `prefersReducedTransparency()`
+
+```ts
+type ContrastPreference = 'more' | 'less' | 'custom' | 'no-preference';
+function prefersContrast(): ContrastPreference;
+function onContrastChange(cb: (pref: ContrastPreference) => void): () => void;
+
+function forcedColors(): boolean;              // Windows High Contrast / forced-colors: active
+function onForcedColorsChange(cb: (active: boolean) => void): () => void;
+
+function prefersReducedTransparency(): boolean;
+function onReducedTransparencyChange(cb: (reduced: boolean) => void): () => void;
+```
+
+Adapters: `useContrastPreference`, `useForcedColors`, `useReducedTransparency` (React, Vue); `contrast$`, `forcedColors$`, `reducedTransparency$` on `PreferencesService` (Angular); `contrast`, `forcedColors`, `reducedTransparency` stores (Svelte); `createContrastPreference`, `createForcedColors`, `createReducedTransparency` (Solid).
+
+#### `getInputModality()` / `onInputModalityChange(cb)`
+
+Tracks whether the user last used the keyboard or a pointer (mouse, touch, pen). The first call starts tracking and sets `data-input-modality` on `<html>`, so custom controls can show focus rings only to keyboard users:
+
+```css
+[data-input-modality='pointer'] .custom-control:focus { outline: none; }
+```
+
+```ts
+type InputModality = 'keyboard' | 'pointer';
+function getInputModality(): InputModality;   // 'keyboard' until the user interacts
+function onInputModalityChange(cb: (m: InputModality) => void): () => void;
+```
+
+Adapters: `useInputModality` (React, Vue), `inputModality$` (Angular), `inputModality` store (Svelte), `createInputModality` (Solid).
 
 ---
 

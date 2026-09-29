@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { ElementRef } from '@angular/core';
+import { ElementRef, NgZone } from '@angular/core';
 import { Subject } from 'rxjs';
 import { RouteAnnouncerService } from '../../src/angular/route-announcer.service.js';
 import { A11yService } from '../../src/angular/focus.service.js';
@@ -86,5 +86,31 @@ describe('SkipLinkDirective', () => {
     const link = document.querySelector('[data-a11yguard-skip-link]');
     expect(link?.textContent).toBe('Skip ahead');
     expect(link?.getAttribute('href')).toBe('#content');
+  });
+});
+
+describe('PreferencesService (new observables)', () => {
+  it('emits contrast, forced colors, transparency and modality', async () => {
+    const { PreferencesService } = await import('../../src/angular/preferences.service.js');
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn((query: string) => ({
+        matches: query === '(prefers-contrast: more)',
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      }))
+    );
+    const zone = { run: (fn: () => void) => fn() } as unknown as NgZone;
+    const prefs = new PreferencesService(zone);
+    const seen: Record<string, unknown> = {};
+    prefs.contrast$.subscribe((v) => (seen.contrast = v)).unsubscribe();
+    prefs.forcedColors$.subscribe((v) => (seen.forced = v)).unsubscribe();
+    prefs.reducedTransparency$.subscribe((v) => (seen.transparency = v)).unsubscribe();
+    const modalities: string[] = [];
+    const sub = prefs.inputModality$.subscribe((v) => modalities.push(v));
+    document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    sub.unsubscribe();
+    expect(seen).toEqual({ contrast: 'more', forced: false, transparency: false });
+    expect(modalities.at(-1)).toBe('pointer');
   });
 });

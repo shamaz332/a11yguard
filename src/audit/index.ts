@@ -9,6 +9,14 @@ import { focusVisible } from './rules/focus-visible.js';
 import { linkPurpose } from './rules/link-purpose.js';
 import { buttonName } from './rules/button-name.js';
 import { targetSize } from './rules/target-size.js';
+import { duplicateId } from './rules/duplicate-id.js';
+import { ariaValidAttr } from './rules/aria-valid-attr.js';
+import { ariaValidRole } from './rules/aria-valid-role.js';
+import { ariaHiddenFocus } from './rules/aria-hidden-focus.js';
+import { documentTitle } from './rules/document-title.js';
+import { frameTitle } from './rules/frame-title.js';
+import { tableHeaders } from './rules/table-headers.js';
+import { autocompleteValid } from './rules/autocomplete-valid.js';
 
 export type { AuditOptions, AuditResult, WCAGLevel } from './types.js';
 export type { Violation, Severity, AuditRule } from './types.js';
@@ -25,6 +33,14 @@ const ALL_RULES: AuditRule[] = [
   linkPurpose,
   buttonName,
   targetSize,
+  duplicateId,
+  ariaValidAttr,
+  ariaValidRole,
+  ariaHiddenFocus,
+  documentTitle,
+  frameTitle,
+  tableHeaders,
+  autocompleteValid,
 ];
 
 /**

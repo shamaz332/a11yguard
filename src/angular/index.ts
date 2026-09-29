@@ -14,5 +14,7 @@ export type {
   KeyboardNavOptions,
   KeyboardNavRole,
   ColorScheme,
+  ContrastPreference,
+  InputModality,
   RouteChangeOptions,
 } from '../core/types.js';

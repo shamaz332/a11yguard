@@ -1,6 +1,7 @@
 export { focusTrap } from './focus-trap.action.js';
 export { keyboardNav } from './keyboard-nav.action.js';
 export { reducedMotion, colorScheme } from './preferences.js';
+export { contrast, forcedColors, reducedTransparency, inputModality } from './more-preferences.js';
 export { announcer } from './announcer.js';
 export { scrollLock, focusRestore, skipLink } from './utility.actions.js';
 
@@ -12,5 +13,7 @@ export type {
   AnnouncePriority,
   KeyboardNavOptions,
   ColorScheme,
+  ContrastPreference,
+  InputModality,
   RouteChangeOptions,
 } from '../core/types.js';
