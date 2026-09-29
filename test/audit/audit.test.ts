@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { auditEAA, watchEAA } from '../../src/audit/index.js';
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
@@ -228,7 +228,9 @@ describe('link-purpose rule', () => {
   });
 
   it('passes ambiguous text when aria-label is present', () => {
-    setBody('<main><a href="/report" aria-label="Download 2024 annual report">Read more</a></main>');
+    setBody(
+      '<main><a href="/report" aria-label="Download 2024 annual report">Read more</a></main>'
+    );
     const r = auditEAA({ rules: ['link-purpose'] });
     expect(r.violations).toHaveLength(0);
   });
@@ -250,7 +252,9 @@ describe('button-name rule', () => {
   });
 
   it('passes button with aria-label', () => {
-    setBody('<main><button aria-label="Close dialog"><span aria-hidden="true">×</span></button></main>');
+    setBody(
+      '<main><button aria-label="Close dialog"><span aria-hidden="true">×</span></button></main>'
+    );
     const r = auditEAA({ rules: ['button-name'] });
     expect(r.violations).toHaveLength(0);
   });

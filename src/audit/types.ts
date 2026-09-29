@@ -33,3 +33,11 @@ export interface AuditResult {
   url: string;
   level: WCAGLevel;
 }
+
+/** A violation without its DOM element, safe to send across process boundaries. */
+export type SerializedViolation = Omit<Violation, 'element'>;
+
+/** An audit result without DOM references, as returned by the Playwright helper. */
+export interface SerializedAuditResult extends Omit<AuditResult, 'violations'> {
+  violations: SerializedViolation[];
+}

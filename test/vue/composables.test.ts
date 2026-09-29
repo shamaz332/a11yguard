@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { mount, flushPromises } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import { defineComponent, ref, nextTick } from 'vue';
 import { useFocusTrap } from '../../src/vue/use-focus-trap.js';
 import { useAnnouncer } from '../../src/vue/use-announcer.js';
@@ -92,11 +92,14 @@ describe('useAnnouncer', () => {
 
 describe('useReducedMotion', () => {
   beforeEach(() => {
-    vi.stubGlobal('matchMedia', vi.fn((query: string) => ({
-      matches: query === '(prefers-reduced-motion: reduce)',
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-    })));
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn((query: string) => ({
+        matches: query === '(prefers-reduced-motion: reduce)',
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      }))
+    );
   });
 
   it('returns a ref with boolean value', async () => {
@@ -119,11 +122,14 @@ describe('useReducedMotion', () => {
 
 describe('useColorScheme', () => {
   beforeEach(() => {
-    vi.stubGlobal('matchMedia', vi.fn((query: string) => ({
-      matches: query === '(prefers-color-scheme: dark)',
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-    })));
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn((query: string) => ({
+        matches: query === '(prefers-color-scheme: dark)',
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      }))
+    );
   });
 
   it('returns a ref with ColorScheme value', async () => {
@@ -179,7 +185,10 @@ describe('useScrollLock', () => {
 
   it('unlocks on unmount', async () => {
     const Comp = defineComponent({
-      setup() { useScrollLock(true); return {}; },
+      setup() {
+        useScrollLock(true);
+        return {};
+      },
       template: `<div />`,
     });
     const wrapper = mount(Comp);

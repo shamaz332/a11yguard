@@ -5,10 +5,16 @@ const WCAG = ['2.5.8'];
 const MIN_SIZE_PX = 24;
 
 const INTERACTIVE = [
-  'a[href]', 'button:not([disabled])',
-  'input[type="checkbox"]', 'input[type="radio"]',
-  'select', '[role="button"]', '[role="link"]',
-  '[role="checkbox"]', '[role="radio"]', '[role="menuitem"]',
+  'a[href]',
+  'button:not([disabled])',
+  'input[type="checkbox"]',
+  'input[type="radio"]',
+  'select',
+  '[role="button"]',
+  '[role="link"]',
+  '[role="checkbox"]',
+  '[role="radio"]',
+  '[role="menuitem"]',
 ].join(',');
 
 export const targetSize: AuditRule = {
@@ -34,8 +40,8 @@ export const targetSize: AuditRule = {
             'serious',
             el,
             `Touch target is ${rect.width.toFixed(0)}×${rect.height.toFixed(0)}px (minimum ${MIN_SIZE_PX}×${MIN_SIZE_PX}px per WCAG 2.5.8)`,
-            `Increase the size of the interactive target to at least ${MIN_SIZE_PX}×${MIN_SIZE_PX} CSS pixels.`,
-          ),
+            `Increase the size of the interactive target to at least ${MIN_SIZE_PX}×${MIN_SIZE_PX} CSS pixels.`
+          )
         );
       }
     }

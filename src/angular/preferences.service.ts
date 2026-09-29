@@ -2,7 +2,16 @@ import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Observable, fromEventPattern, startWith } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { safeMatchMedia } from '../core/utils/media.js';
-import type { ColorScheme } from '../core/types.js';
+import {
+  prefersContrast,
+  onContrastChange,
+  forcedColors,
+  onForcedColorsChange,
+  prefersReducedTransparency,
+  onReducedTransparencyChange,
+} from '../core/preferences.js';
+import { getInputModality, onInputModalityChange } from '../core/input-modality.js';
+import type { ColorScheme, ContrastPreference, InputModality } from '../core/types.js';
 
 /**
  * Angular service exposing user OS preferences as RxJS Observables.
@@ -23,7 +32,27 @@ export class PreferencesService implements OnDestroy {
   /** Emits the user's preferred color scheme. */
   readonly colorScheme$: Observable<ColorScheme>;
 
+  /** Emits the user's `prefers-contrast` setting. */
+  readonly contrast$: Observable<ContrastPreference>;
+
+  /** Emits `true` while forced colors (Windows High Contrast) are active. */
+  readonly forcedColors$: Observable<boolean>;
+
+  /** Emits `true` when the user prefers reduced transparency. */
+  readonly reducedTransparency$: Observable<boolean>;
+
+  /** Emits 'keyboard' or 'pointer' as the user switches input method. */
+  readonly inputModality$: Observable<InputModality>;
+
   constructor(private ngZone: NgZone) {
+    this.contrast$ = this.fromSubscription(prefersContrast, onContrastChange);
+    this.forcedColors$ = this.fromSubscription(forcedColors, onForcedColorsChange);
+    this.reducedTransparency$ = this.fromSubscription(
+      prefersReducedTransparency,
+      onReducedTransparencyChange
+    );
+    this.inputModality$ = this.fromSubscription(getInputModality, onInputModalityChange);
+
     this.reducedMotion$ = this.createMediaObservable(
       '(prefers-reduced-motion: reduce)',
       (mq) => mq.matches
@@ -84,6 +113,16 @@ export class PreferencesService implements OnDestroy {
         mqDark.removeEventListener('change', handler);
         mqLight.removeEventListener('change', handler);
       };
+    });
+  }
+
+  private fromSubscription<T>(
+    read: () => T,
+    subscribe: (cb: (value: T) => void) => () => void
+  ): Observable<T> {
+    return new Observable<T>((subscriber) => {
+      subscriber.next(read());
+      return subscribe((value) => this.ngZone.run(() => subscriber.next(value)));
     });
   }
 

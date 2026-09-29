@@ -17,14 +17,11 @@ import type { ColorScheme } from '../core/types.js';
  * </script>
  * <div style:transition={$reducedMotion ? 'none' : 'all 0.3s'}>...</div>
  */
-export const reducedMotion: Readable<boolean> = readable<boolean>(
-  false,
-  (set) => {
-    if (typeof window === 'undefined') return;
-    set(prefersReducedMotion());
-    return onReducedMotionChange(set);
-  }
-);
+export const reducedMotion: Readable<boolean> = readable<boolean>(false, (set) => {
+  if (typeof window === 'undefined') return;
+  set(prefersReducedMotion());
+  return onReducedMotionChange(set);
+});
 
 /**
  * Svelte readable store that reflects `prefers-color-scheme`.
@@ -35,11 +32,8 @@ export const reducedMotion: Readable<boolean> = readable<boolean>(
  * </script>
  * <div data-theme={$colorScheme}>...</div>
  */
-export const colorScheme: Readable<ColorScheme> = readable<ColorScheme>(
-  'light',
-  (set) => {
-    if (typeof window === 'undefined') return;
-    set(prefersColorScheme());
-    return onColorSchemeChange(set);
-  }
-);
+export const colorScheme: Readable<ColorScheme> = readable<ColorScheme>('light', (set) => {
+  if (typeof window === 'undefined') return;
+  set(prefersColorScheme());
+  return onColorSchemeChange(set);
+});

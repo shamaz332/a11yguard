@@ -23,7 +23,7 @@ export const pageLang: AuditRule = {
           'serious',
           html,
           '<html> element is missing a valid lang attribute',
-          'Add lang="en" (or the appropriate BCP 47 language tag) to the <html> element.',
+          'Add lang="en" (or the appropriate BCP 47 language tag) to the <html> element.'
         ),
       ];
     }

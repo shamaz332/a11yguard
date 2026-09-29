@@ -6,40 +6,96 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/core/index.d.ts",
-      "import": "./dist/core/index.js",
-      "require": "./dist/core/index.cjs"
+      "import": {
+        "types": "./dist/core/index.d.ts",
+        "default": "./dist/core/index.js"
+      },
+      "require": {
+        "types": "./dist/core/index.d.cts",
+        "default": "./dist/core/index.cjs"
+      }
     },
     "./react": {
-      "types": "./dist/react/index.d.ts",
-      "import": "./dist/react/index.js",
-      "require": "./dist/react/index.cjs"
+      "import": {
+        "types": "./dist/react/index.d.ts",
+        "default": "./dist/react/index.js"
+      },
+      "require": {
+        "types": "./dist/react/index.d.cts",
+        "default": "./dist/react/index.cjs"
+      }
     },
     "./vue": {
-      "types": "./dist/vue/index.d.ts",
-      "import": "./dist/vue/index.js",
-      "require": "./dist/vue/index.cjs"
+      "import": {
+        "types": "./dist/vue/index.d.ts",
+        "default": "./dist/vue/index.js"
+      },
+      "require": {
+        "types": "./dist/vue/index.d.cts",
+        "default": "./dist/vue/index.cjs"
+      }
     },
     "./angular": {
-      "types": "./dist/angular/index.d.ts",
-      "import": "./dist/angular/index.js",
-      "require": "./dist/angular/index.cjs"
+      "import": {
+        "types": "./dist/angular/index.d.ts",
+        "default": "./dist/angular/index.js"
+      },
+      "require": {
+        "types": "./dist/angular/index.d.cts",
+        "default": "./dist/angular/index.cjs"
+      }
     },
     "./svelte": {
-      "types": "./dist/svelte/index.d.ts",
-      "import": "./dist/svelte/index.js",
-      "require": "./dist/svelte/index.cjs"
+      "import": {
+        "types": "./dist/svelte/index.d.ts",
+        "default": "./dist/svelte/index.js"
+      },
+      "require": {
+        "types": "./dist/svelte/index.d.cts",
+        "default": "./dist/svelte/index.cjs"
+      }
     },
     "./solid": {
-      "types": "./dist/solid/index.d.ts",
-      "import": "./dist/solid/index.js",
-      "require": "./dist/solid/index.cjs"
+      "import": {
+        "types": "./dist/solid/index.d.ts",
+        "default": "./dist/solid/index.js"
+      },
+      "require": {
+        "types": "./dist/solid/index.d.cts",
+        "default": "./dist/solid/index.cjs"
+      }
     },
     "./audit": {
-      "types": "./dist/audit/index.d.ts",
-      "import": "./dist/audit/index.js",
-      "require": "./dist/audit/index.cjs"
-    }
+      "import": {
+        "types": "./dist/audit/index.d.ts",
+        "default": "./dist/audit/index.js"
+      },
+      "require": {
+        "types": "./dist/audit/index.d.cts",
+        "default": "./dist/audit/index.cjs"
+      }
+    },
+    "./testing": {
+      "import": {
+        "types": "./dist/testing/index.d.ts",
+        "default": "./dist/testing/index.js"
+      },
+      "require": {
+        "types": "./dist/testing/index.d.cts",
+        "default": "./dist/testing/index.cjs"
+      }
+    },
+    "./playwright": {
+      "import": {
+        "types": "./dist/playwright/index.d.ts",
+        "default": "./dist/playwright/index.js"
+      },
+      "require": {
+        "types": "./dist/playwright/index.d.cts",
+        "default": "./dist/playwright/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
   },
   "main": "./dist/core/index.cjs",
   "module": "./dist/core/index.js",
@@ -51,7 +107,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsup --config tsup.browser.config.ts",
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -62,7 +118,9 @@
     "format:check": "prettier --check src test",
     "size": "size-limit",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "pnpm build && pnpm test && pnpm size"
+    "prepublishOnly": "pnpm build && pnpm test && pnpm size",
+    "lint:package": "publint && attw --pack . --profile node16",
+    "changeset": "changeset"
   },
   "keywords": [
     "accessibility",
@@ -80,7 +138,10 @@
     "solid",
     "keyboard-navigation",
     "color-contrast",
-    "apca"
+    "apca",
+    "playwright",
+    "vitest",
+    "jest"
   ],
   "author": {
     "name": "Shamaz Saeed",
@@ -89,7 +150,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/shamaz332/a11yguard.git"
+    "url": "git+https://github.com/shamaz332/a11yguard.git"
   },
   "bugs": {
     "url": "https://github.com/shamaz332/a11yguard/issues"
@@ -128,9 +189,12 @@
     }
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@changesets/cli": "^3.0.3",
     "@size-limit/preset-small-lib": "^11.0.0",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.0.0",
+    "@types/node": "^20.19.43",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
@@ -140,8 +204,10 @@
     "@vue/test-utils": "^2.0.0",
     "eslint": "^8.0.0",
     "eslint-plugin-jsdoc": "^48.0.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "jsdom": "^24.0.0",
     "prettier": "^3.0.0",
+    "publint": "^0.3.24",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "size-limit": "^11.0.0",
@@ -150,5 +216,9 @@
     "vitest": "^1.0.0",
     "vue": "^3.0.0"
   },
-  "packageManager": "pnpm@10.26.2+sha512.0e308ff2005fc7410366f154f625f6631ab2b16b1d2e70238444dd6ae9d630a8482d92a451144debc492416896ed16f7b114a86ec68b8404b2443869e68ffda6"
+  "packageManager": "pnpm@10.26.2+sha512.0e308ff2005fc7410366f154f625f6631ab2b16b1d2e70238444dd6ae9d630a8482d92a451144debc492416896ed16f7b114a86ec68b8404b2443869e68ffda6",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
 }

@@ -3,6 +3,9 @@ export { FocusTrapDirective } from './focus-trap.directive.js';
 export { KeyboardNavDirective } from './keyboard-nav.directive.js';
 export { AnnouncerService } from './announcer.service.js';
 export { PreferencesService } from './preferences.service.js';
+export { RouteAnnouncerService } from './route-announcer.service.js';
+export { A11yService } from './focus.service.js';
+export { SkipLinkDirective } from './skip-link.directive.js';
 
 // Re-export shared types
 export type {
@@ -11,4 +14,7 @@ export type {
   KeyboardNavOptions,
   KeyboardNavRole,
   ColorScheme,
+  ContrastPreference,
+  InputModality,
+  RouteChangeOptions,
 } from '../core/types.js';

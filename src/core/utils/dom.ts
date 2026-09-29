@@ -108,3 +108,15 @@ export function getSelector(el: HTMLElement): string {
   }
   return parts.join(' > ') || el.tagName.toLowerCase();
 }
+
+/**
+ * Moves focus to any element, making it programmatically focusable first if needed.
+ * A temporary `tabindex="-1"` is removed again once the element loses focus.
+ */
+export function focusElement(el: HTMLElement): void {
+  if (!el.hasAttribute('tabindex') && !el.matches(FOCUSABLE_SELECTOR)) {
+    el.setAttribute('tabindex', '-1');
+    el.addEventListener('blur', () => el.removeAttribute('tabindex'), { once: true });
+  }
+  el.focus();
+}

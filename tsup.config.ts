@@ -9,6 +9,8 @@ export default defineConfig({
     'svelte/index': 'src/svelte/index.ts',
     'solid/index': 'src/solid/index.ts',
     'audit/index': 'src/audit/index.ts',
+    'testing/index': 'src/testing/index.ts',
+    'playwright/index': 'src/playwright/index.ts',
   },
   format: ['esm', 'cjs'],
   dts: true,
@@ -18,6 +20,8 @@ export default defineConfig({
   treeshake: true,
   outDir: 'dist',
   target: 'es2022',
+  // Provides import.meta.url in the CJS build of the Playwright helper
+  shims: true,
   external: [
     'react',
     'react-dom',

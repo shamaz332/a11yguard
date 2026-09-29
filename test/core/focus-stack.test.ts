@@ -1,5 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { pushFocus, popFocus, clearFocusStack, focusStackDepth } from '../../src/core/focus-stack.js';
+import {
+  pushFocus,
+  popFocus,
+  clearFocusStack,
+  focusStackDepth,
+} from '../../src/core/focus-stack.js';
 
 beforeEach(() => {
   clearFocusStack();

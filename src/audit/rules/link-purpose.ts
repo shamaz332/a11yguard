@@ -4,9 +4,20 @@ import { makeViolation, queryAll, getTextContent } from '../utils.js';
 const WCAG = ['2.4.4'];
 
 const AMBIGUOUS = new Set([
-  'click here', 'here', 'read more', 'more', 'learn more',
-  'more info', 'more information', 'details', 'link', 'this link',
-  'click', 'go', 'continue', 'info',
+  'click here',
+  'here',
+  'read more',
+  'more',
+  'learn more',
+  'more info',
+  'more information',
+  'details',
+  'link',
+  'this link',
+  'click',
+  'go',
+  'continue',
+  'info',
 ]);
 
 export const linkPurpose: AuditRule = {
@@ -33,8 +44,8 @@ export const linkPurpose: AuditRule = {
             'moderate',
             el,
             `Link text "${getTextContent(el)}" is ambiguous out of context`,
-            'Use descriptive link text that explains the destination, or add aria-label with a more specific description.',
-          ),
+            'Use descriptive link text that explains the destination, or add aria-label with a more specific description.'
+          )
         );
       }
     }

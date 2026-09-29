@@ -107,13 +107,21 @@ describe('checkContrast — APCA', () => {
     const small = checkContrast('#777', '#fff', { algorithm: 'apca', fontSize: 12 });
     const large = checkContrast('#777', '#fff', { algorithm: 'apca', fontSize: 48 });
     // Smaller font needs higher Lc
-    expect((small.apca?.minRequired ?? 0)).toBeGreaterThanOrEqual(large.apca?.minRequired ?? 0);
+    expect(small.apca?.minRequired ?? 0).toBeGreaterThanOrEqual(large.apca?.minRequired ?? 0);
   });
 
   it('respects fontWeight for minRequired', () => {
-    const thin = checkContrast('#777', '#fff', { algorithm: 'apca', fontSize: 16, fontWeight: 100 });
-    const bold = checkContrast('#777', '#fff', { algorithm: 'apca', fontSize: 16, fontWeight: 700 });
+    const thin = checkContrast('#777', '#fff', {
+      algorithm: 'apca',
+      fontSize: 16,
+      fontWeight: 100,
+    });
+    const bold = checkContrast('#777', '#fff', {
+      algorithm: 'apca',
+      fontSize: 16,
+      fontWeight: 700,
+    });
     // Thin weight needs higher Lc
-    expect((thin.apca?.minRequired ?? 0)).toBeGreaterThanOrEqual(bold.apca?.minRequired ?? 0);
+    expect(thin.apca?.minRequired ?? 0).toBeGreaterThanOrEqual(bold.apca?.minRequired ?? 0);
   });
 });

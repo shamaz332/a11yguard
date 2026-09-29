@@ -168,6 +168,51 @@ export interface SkipLinkOptions {
   label?: string;
 }
 
+// ─── Route Announcer ──────────────────────────────────────────────────────────
+
+export interface RouteChangeOptions {
+  /** Page title to announce. Default: `document.title`. */
+  title?: string;
+  /**
+   * Builds the announced message from the title.
+   * Default: `(title) => \`Navigated to ${title}\``.
+   */
+  message?: (title: string) => string;
+  /**
+   * Where to move focus after navigation. A CSS selector, an element, or `false`
+   * to leave focus alone. Default: `'h1'`, falling back to `main`, then `body`.
+   */
+  focus?: string | HTMLElement | false;
+  /** Clear the focus stack, since saved elements belong to the old page. Default: true. */
+  clearFocusStack?: boolean;
+}
+
+// ─── Field Description ───────────────────────────────────────────────────────
+
+export interface DescribeFieldOptions {
+  /** Visible label. A `<label>` gets `for`; any other element is linked via `aria-labelledby`. */
+  label?: HTMLElement | null;
+  /** Hint / help text, linked via `aria-describedby`. */
+  hint?: HTMLElement | null;
+  /** Element that shows the error message. Hidden while there is no error. */
+  error?: HTMLElement | null;
+  /** How to announce new errors. Default: 'polite'. `false` disables announcements. */
+  announce?: AnnouncePriority | false;
+}
+
+export interface FieldDescription {
+  /** Show an error message (marks the field invalid) or pass `null` to clear it. */
+  setError(message: string | null): void;
+  /** Restore the field's original ARIA attributes. */
+  destroy(): void;
+}
+
 // ─── Preferences ─────────────────────────────────────────────────────────────
 
 export type ColorScheme = 'light' | 'dark' | 'no-preference';
+
+/** Value of the `prefers-contrast` media feature. */
+export type ContrastPreference = 'more' | 'less' | 'custom' | 'no-preference';
+
+/** How the user last interacted with the page. */
+export type InputModality = 'keyboard' | 'pointer';

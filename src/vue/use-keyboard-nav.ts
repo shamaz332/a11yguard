@@ -18,11 +18,17 @@ export function useKeyboardNav(options: KeyboardNavOptions): Ref<HTMLElement | n
   let nav: KeyboardNav | null = null;
 
   watch(containerRef, (el, prevEl) => {
-    if (prevEl) { nav?.destroy(); nav = null; }
+    if (prevEl) {
+      nav?.destroy();
+      nav = null;
+    }
     if (el) nav = createKeyboardNav(el, options);
   });
 
-  onUnmounted(() => { nav?.destroy(); nav = null; });
+  onUnmounted(() => {
+    nav?.destroy();
+    nav = null;
+  });
 
   return containerRef;
 }

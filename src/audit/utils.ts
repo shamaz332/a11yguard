@@ -1,13 +1,16 @@
 import { getEAAArticles } from './eaa-map.js';
 import type { Violation, Severity } from './types.js';
 
+/**
+ *
+ */
 export function makeViolation(
   ruleId: string,
   wcag: string[],
   severity: Severity,
   element: Element,
   message: string,
-  help: string,
+  help: string
 ): Violation {
   return {
     ruleId,
@@ -21,6 +24,9 @@ export function makeViolation(
   };
 }
 
+/**
+ *
+ */
 export function getSelector(el: Element): string {
   if (el.id) return `#${el.id}`;
   const tag = el.tagName.toLowerCase();
@@ -30,9 +36,7 @@ export function getSelector(el: Element): string {
     .join('');
   const parent = el.parentElement;
   if (!parent) return tag + classes;
-  const siblings = Array.from(parent.children).filter(
-    (c) => c.tagName === el.tagName,
-  );
+  const siblings = Array.from(parent.children).filter((c) => c.tagName === el.tagName);
   if (siblings.length > 1) {
     const idx = siblings.indexOf(el) + 1;
     return `${tag + classes}:nth-of-type(${idx})`;
@@ -40,10 +44,16 @@ export function getSelector(el: Element): string {
   return tag + classes;
 }
 
+/**
+ *
+ */
 export function getTextContent(el: Element): string {
   return (el.textContent ?? '').trim().replace(/\s+/g, ' ');
 }
 
+/**
+ *
+ */
 export function queryAll(root: Element | Document, selector: string): Element[] {
   return Array.from(root.querySelectorAll(selector));
 }

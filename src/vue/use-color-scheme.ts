@@ -17,7 +17,9 @@ export function useColorScheme(): Ref<ColorScheme> {
 
   onMounted(() => {
     scheme.value = prefersColorScheme();
-    unsub = onColorSchemeChange((v) => { scheme.value = v; });
+    unsub = onColorSchemeChange((v) => {
+      scheme.value = v;
+    });
   });
 
   onUnmounted(() => unsub?.());

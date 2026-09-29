@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { createKeyboardNav } from '../../src/core/keyboard-nav.js';
 
 function buildMenu(count = 3): { container: HTMLDivElement; items: HTMLButtonElement[] } {
@@ -64,7 +64,11 @@ describe('createKeyboardNav', () => {
 
   it('wraps from last to first on ArrowDown', () => {
     const { container, items } = buildMenu(3);
-    const nav = createKeyboardNav(container, { role: 'menu', items: '[role="menuitem"]', wrap: true });
+    const nav = createKeyboardNav(container, {
+      role: 'menu',
+      items: '[role="menuitem"]',
+      wrap: true,
+    });
     nav.focusItem(2);
     const spy = vi.spyOn(items[0]!, 'focus');
     fireKey(container, 'ArrowDown');
@@ -74,7 +78,11 @@ describe('createKeyboardNav', () => {
 
   it('wraps from first to last on ArrowUp', () => {
     const { container, items } = buildMenu(3);
-    const nav = createKeyboardNav(container, { role: 'menu', items: '[role="menuitem"]', wrap: true });
+    const nav = createKeyboardNav(container, {
+      role: 'menu',
+      items: '[role="menuitem"]',
+      wrap: true,
+    });
     nav.focusItem(0);
     const spy = vi.spyOn(items[2]!, 'focus');
     fireKey(container, 'ArrowUp');

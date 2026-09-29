@@ -23,8 +23,8 @@ export const headingOrder: AuditRule = {
             'moderate',
             el,
             `Heading level skipped: h${prevLevel} → h${level}`,
-            `Do not skip heading levels. After h${prevLevel}, use h${prevLevel + 1}.`,
-          ),
+            `Do not skip heading levels. After h${prevLevel}, use h${prevLevel + 1}.`
+          )
         );
       }
       prevLevel = level;
