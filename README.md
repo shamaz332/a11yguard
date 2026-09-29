@@ -37,13 +37,17 @@ Existing solutions either:
 | Scroll lock | `@shamaz332/a11yguard` | iOS-safe body scroll lock, reference-counted, prevents layout shift |
 | Focus stack | `@shamaz332/a11yguard` | Push/pop focus for layered UI (modals stacking on drawers) |
 | Skip link | `@shamaz332/a11yguard` | Inject a "Skip to main content" link as the first tab stop |
+| Route announcer | `@shamaz332/a11yguard` | Announce SPA navigations and move focus to the new page heading |
+| Field descriptions | `@shamaz332/a11yguard` | Wire labels, hints and error messages to inputs; announce new errors |
+| IDs | `@shamaz332/a11yguard` | `createId()` / `ensureId()` for `aria-labelledby`, `aria-describedby`, `aria-controls` |
+| Visually hidden | `@shamaz332/a11yguard` | Screen-reader-only text as a style object, CSS string or component |
 | Contrast checker | `@shamaz332/a11yguard` | WCAG 2.1 ratio + APCA Lc (clean-room). Returns pass/fail per level |
 | User preferences | `@shamaz332/a11yguard` | `prefers-reduced-motion`, `prefers-color-scheme` — SSR-safe, reactive |
-| **React hooks** | `@shamaz332/a11yguard/react` | `useFocusTrap`, `useAnnouncer`, `useKeyboardNav`, `useScrollLock`, `useReducedMotion`, `useColorScheme` |
-| **Vue composables** | `@shamaz332/a11yguard/vue` | `useFocusTrap`, `useAnnouncer`, `useKeyboardNav`, `useScrollLock`, `useReducedMotion`, `useColorScheme` |
-| **Angular directives** | `@shamaz332/a11yguard/angular` | `FocusTrapDirective`, `KeyboardNavDirective`, `AnnouncerService`, `PreferencesService`, `A11yGuardModule` |
-| **Svelte actions** | `@shamaz332/a11yguard/svelte` | `focusTrap`, `keyboardNav` actions + `reducedMotion`, `colorScheme` stores |
-| **Solid primitives** | `@shamaz332/a11yguard/solid` | `createFocusTrap`, `createAnnouncer`, `createKeyboardNav`, `createReducedMotion`, `createColorScheme` |
+| **React hooks** | `@shamaz332/a11yguard/react` | `useFocusTrap`, `useAnnouncer`, `useKeyboardNav`, `useScrollLock`, `useReducedMotion`, `useColorScheme`, `useRouteAnnouncer`, `useSkipLink`, `useFocusRestore`, `useA11yId`, `<VisuallyHidden>` |
+| **Vue composables** | `@shamaz332/a11yguard/vue` | `useFocusTrap`, `useAnnouncer`, `useKeyboardNav`, `useScrollLock`, `useReducedMotion`, `useColorScheme`, `useRouteAnnouncer`, `useSkipLink`, `useFocusRestore`, `useA11yId`, `<VisuallyHidden>` |
+| **Angular directives** | `@shamaz332/a11yguard/angular` | `FocusTrapDirective`, `KeyboardNavDirective`, `SkipLinkDirective`, `AnnouncerService`, `PreferencesService`, `RouteAnnouncerService`, `A11yService`, `A11yGuardModule` |
+| **Svelte actions** | `@shamaz332/a11yguard/svelte` | `focusTrap`, `keyboardNav`, `scrollLock`, `focusRestore`, `skipLink` actions + `reducedMotion`, `colorScheme` stores |
+| **Solid primitives** | `@shamaz332/a11yguard/solid` | `createFocusTrap`, `createAnnouncer`, `createKeyboardNav`, `createReducedMotion`, `createColorScheme`, `createScrollLock`, `createFocusRestore`, `createSkipLink`, `createRouteAnnouncer` |
 | **EAA audit** | `@shamaz332/a11yguard/audit` | `auditEAA()`, `watchEAA()` — 10 WCAG rules mapped to EN 301 549 / EAA articles |
 
 ---
@@ -1133,11 +1137,69 @@ function clearFocusStack(): void;     // empties the stack
 
 ```ts
 interface SkipLinkOptions {
-  text?: string;     // default: 'Skip to main content'
+  label?: string;    // default: 'Skip to main content'
   target?: string;   // default: '#main'
 }
 function injectSkipLink(options?: SkipLinkOptions): () => void;
 // Returns cleanup function that removes the injected link
+```
+
+#### `announceRouteChange(options?)`
+
+Call after a client-side navigation has rendered. Announces the new page title, moves focus to the page heading (falling back to `main`, then `body`) and clears the focus stack. Covers WCAG 2.4.3 and 4.1.3 for single-page apps. Each framework adapter has a ready-made wrapper (`useRouteAnnouncer`, `RouteAnnouncerService`, `createRouteAnnouncer`).
+
+```ts
+interface RouteChangeOptions {
+  title?: string;                       // default: document.title
+  message?: (title: string) => string;  // default: t => `Navigated to ${t}`
+  focus?: string | HTMLElement | false; // default: 'h1' → main → body
+  clearFocusStack?: boolean;            // default: true
+}
+function announceRouteChange(options?: RouteChangeOptions): void;
+```
+
+```ts
+// SvelteKit
+afterNavigate(() => announceRouteChange());
+```
+
+#### `describeField(input, options?)`
+
+Connects a form control to its label, hint and error message. `setError()` toggles `aria-invalid`, `aria-errormessage` and `aria-describedby`, shows or hides the error element and announces new errors. Covers WCAG 1.3.1, 3.3.1 and 3.3.2.
+
+```ts
+const field = describeField(emailInput, { label, hint, error: errorEl });
+field.setError('Enter a valid email address');
+field.setError(null);  // clear
+field.destroy();       // restore original attributes
+
+interface DescribeFieldOptions {
+  label?: HTMLElement | null;           // <label> gets `for`, others use aria-labelledby
+  hint?: HTMLElement | null;
+  error?: HTMLElement | null;
+  announce?: 'polite' | 'assertive' | false; // default: 'polite'
+}
+```
+
+#### `createId(prefix?)` / `ensureId(el, prefix?)`
+
+```ts
+createId('tooltip');  // 'tooltip-1'
+ensureId(hintEl);     // returns hintEl.id, assigning one if missing
+```
+
+Ids are sequential, so they will not match between server and client. For SSR use `useA11yId()` from the React (18+) or Vue (3.5+) adapter.
+
+#### `visuallyHidden` / `visuallyHiddenCss` / `applyVisuallyHidden(el)`
+
+Hide content visually while keeping it available to screen readers — for icon-only buttons, extra link context and so on.
+
+```tsx
+<button><TrashIcon aria-hidden="true" /><span style={visuallyHidden}>Delete</span></button>
+```
+
+```ts
+style.textContent = `.sr-only { ${visuallyHiddenCss} }`;
 ```
 
 #### `checkContrast(fg, bg, options?)`
@@ -1195,6 +1257,11 @@ function useKeyboardNav<T extends HTMLElement = HTMLElement>(options: KeyboardNa
 function useScrollLock(active: boolean): void;
 function useReducedMotion(): boolean;
 function useColorScheme(): ColorScheme;
+function useRouteAnnouncer(routeKey: unknown, options?: RouteChangeOptions): void; // e.g. useRouteAnnouncer(pathname)
+function useSkipLink(options?: SkipLinkOptions): void;
+function useFocusRestore(active: boolean): void;  // restores focus to the trigger when active turns false
+function useA11yId(prefix?: string): string;      // SSR-safe on React 18+
+function VisuallyHidden(props: { as?: ElementType } & HTMLAttributes<HTMLElement>): ReactElement;
 ```
 
 ---
@@ -1208,6 +1275,11 @@ function useKeyboardNav(options: KeyboardNavOptions): Ref<HTMLElement | null>;
 function useScrollLock(active: MaybeRef<boolean>): void;
 function useReducedMotion(): Ref<boolean>;
 function useColorScheme(): Ref<ColorScheme>;
+function useRouteAnnouncer(source: WatchSource, options?: RouteChangeOptions): void; // e.g. () => route.fullPath
+function useSkipLink(options?: SkipLinkOptions): void;
+function useFocusRestore(active: MaybeRef<boolean>): void;
+function useA11yId(prefix?: string): string;      // SSR-safe on Vue 3.5+
+const VisuallyHidden: Component;                  // <VisuallyHidden as="span">…</VisuallyHidden>
 ```
 
 ---
@@ -1220,7 +1292,10 @@ function useColorScheme(): Ref<ColorScheme>;
 | `KeyboardNavDirective` | `@Directive` | `[a11yKeyboardNav]` with `navRole` and `navItems` inputs |
 | `AnnouncerService` | `@Injectable` | `announce(message, priority?)` method |
 | `PreferencesService` | `@Injectable` | `reducedMotion$: Observable<boolean>`, `colorScheme$: Observable<ColorScheme>` |
-| `A11yGuardModule` | `NgModule` | Exports both directives for NgModule projects |
+| `SkipLinkDirective` | `@Directive` | `<main a11ySkipLink>` or `<main a11ySkipLink="Skip to content">` — injects a skip link to the host |
+| `RouteAnnouncerService` | `@Injectable` | `watch(router.events.pipe(filter(e => e instanceof NavigationEnd)))`, or `announce(options?)` |
+| `A11yService` | `@Injectable` | `saveFocus()`, `restoreFocus()`, `clearFocus()`, `lockScroll()`, `unlockScroll()`, `scrollLocked`, `createId()` |
+| `A11yGuardModule` | `NgModule` | Exports all directives for NgModule projects |
 
 ---
 
@@ -1230,6 +1305,9 @@ function useColorScheme(): Ref<ColorScheme>;
 // Actions
 function focusTrap(node: HTMLElement, options?: { active?: boolean } & FocusTrapOptions): ActionReturn;
 function keyboardNav(node: HTMLElement, options: KeyboardNavOptions): ActionReturn;
+function scrollLock(node: HTMLElement, active?: boolean): ActionReturn;  // use:scrollLock={open}
+function focusRestore(node: HTMLElement): ActionReturn;                  // restores focus when the node is removed
+function skipLink(node: HTMLElement, label?: string): ActionReturn;      // <main use:skipLink>
 
 // Stores
 const reducedMotion: Readable<boolean>;
@@ -1253,6 +1331,10 @@ function createAnnouncer(): (message: string, priority?: 'polite' | 'assertive')
 function createKeyboardNav(element: Accessor<HTMLElement | undefined>, options: KeyboardNavOptions): void;
 function createReducedMotion(): Accessor<boolean>;
 function createColorScheme(): Accessor<ColorScheme>;
+function createScrollLock(active: Accessor<boolean>): void;
+function createFocusRestore(active: Accessor<boolean>): void;
+function createSkipLink(options?: SkipLinkOptions): void;
+function createRouteAnnouncer(source: Accessor<unknown>, options?: RouteChangeOptions): void; // e.g. () => location.pathname
 ```
 
 ---

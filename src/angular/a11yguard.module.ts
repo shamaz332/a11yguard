@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FocusTrapDirective } from './focus-trap.directive.js';
 import { KeyboardNavDirective } from './keyboard-nav.directive.js';
+import { SkipLinkDirective } from './skip-link.directive.js';
 
 /**
  * NgModule that exports all a11yguard directives.
@@ -14,7 +15,7 @@ import { KeyboardNavDirective } from './keyboard-nav.directive.js';
  * export class AppModule {}
  */
 @NgModule({
-  imports: [FocusTrapDirective, KeyboardNavDirective],
-  exports: [FocusTrapDirective, KeyboardNavDirective],
+  imports: [FocusTrapDirective, KeyboardNavDirective, SkipLinkDirective],
+  exports: [FocusTrapDirective, KeyboardNavDirective, SkipLinkDirective],
 })
 export class A11yGuardModule {}

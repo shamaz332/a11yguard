@@ -27,6 +27,16 @@ export { lockScroll, unlockScroll, isScrollLocked } from './scroll-lock.js';
 // Skip Link
 export { injectSkipLink } from './skip-link.js';
 
+// Route Announcer
+export { announceRouteChange } from './route-announcer.js';
+
+// IDs & Field Descriptions
+export { createId, ensureId } from './id.js';
+export { describeField } from './field.js';
+
+// Visually Hidden
+export { visuallyHidden, visuallyHiddenCss, applyVisuallyHidden } from './visually-hidden.js';
+
 // Types
 export type {
   FocusTrap,
@@ -42,5 +52,8 @@ export type {
   KeyboardNavOptions,
   KeyboardNav,
   SkipLinkOptions,
+  RouteChangeOptions,
+  DescribeFieldOptions,
+  FieldDescription,
   ColorScheme,
 } from './types.js';

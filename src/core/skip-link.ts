@@ -1,4 +1,5 @@
 import type { SkipLinkOptions } from './types.js';
+import { focusElement } from './utils/dom.js';
 
 const SKIP_LINK_STYLES = `
   position: absolute;
@@ -61,16 +62,7 @@ export function injectSkipLink(options: SkipLinkOptions = {}): () => void {
   link.addEventListener('click', (e) => {
     e.preventDefault();
     const targetEl = document.querySelector<HTMLElement>(target);
-    if (targetEl) {
-      // Make target programmatically focusable if it isn't already
-      if (!targetEl.hasAttribute('tabindex')) {
-        targetEl.setAttribute('tabindex', '-1');
-        targetEl.addEventListener('blur', () => targetEl.removeAttribute('tabindex'), {
-          once: true,
-        });
-      }
-      targetEl.focus();
-    }
+    if (targetEl) focusElement(targetEl);
   });
 
   // Insert as first child of body so it is the first element in tab order
